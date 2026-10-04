@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Local data / generated Spark output
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+
+#secrets
+.env

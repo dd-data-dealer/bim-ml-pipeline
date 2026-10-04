@@ -1,0 +1,4 @@
+pyspark
+ifcopenshell==0.9.0
+pandas
+pyarrow
