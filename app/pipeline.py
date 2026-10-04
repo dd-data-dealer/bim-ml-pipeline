@@ -49,12 +49,32 @@ products_df.write \
 # ).show(10, truncate=True)
 
 # check if any with desctription:
-products_df.filter(
-    F.col("description").isNotNull()
-).select(
-    "element_type",
-    "name",
-    "description"
-).show(20, truncate=False)
+# products_df.filter(
+#     F.col("description").isNotNull()
+# ).select(
+#     "element_type",
+#     "name",
+#     "description"
+# ).show(20, truncate=False)
+
+# KZ 04.10.2026 checks before creating silver. validate bronze layer:
+# 1 data profiling
+#
+products_df.printSchema()
+
+products_df.select("element_type").distinct().show(50, truncate=False)
+
+# 2 null counts
+products_df.select([
+    F.sum(F.col(c).isNull().cast("int")).alias(c)
+    for c in products_df.columns
+]).show()
+
+# 3 duplicates on the IFC identifier:
+
+products_df.groupBy("global_id") \
+    .count() \
+    .filter(F.col("count") > 1) \
+    .show()
 
 spark.stop()
