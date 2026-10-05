@@ -22,7 +22,13 @@ RAW_PRODUCT_SCHEMA
 PySpark DataFrame
    |
    v
-Bronze layer (Parquet)
+Bronze layer (Parquet)  3,822 raw products (5 oct 2026)
+   |
+   v
+filter + clean
+   |
+   v
+SILVER              physical BIM elements
 ```
 
 ### Raw IFC Extraction

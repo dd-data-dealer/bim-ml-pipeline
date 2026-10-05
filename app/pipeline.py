@@ -1,8 +1,11 @@
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
+from sympy.solvers.ode.single import solver_map
 
 from .parser import open_ifc, extract_products
 from .schemas import RAW_PRODUCT_SCHEMA
+from .transformer import create_silver_products
+
 from collections import Counter
 
 
@@ -77,4 +80,20 @@ products_df.groupBy("global_id") \
     .filter(F.col("count") > 1) \
     .show()
 
+
+
+# ___________
+# silver
+
+
+silver_df = create_silver_products(products_df)
+
+silver_df.show(10, truncate=False)
+silver_df.printSchema()
+
+silver_df.write \
+    .mode("overwrite") \
+    .parquet("data/silver/products")
 spark.stop()
+
+
