@@ -13,6 +13,9 @@ IfcOpenShell
 Extract IfcProduct objects
    |
    v
+Extract + flatten IFC property/quantity sets
+   |
+   v
 Normalize selected product attributes
    |
    v
@@ -22,13 +25,20 @@ RAW_PRODUCT_SCHEMA
 PySpark DataFrame
    |
    v
-Bronze layer (Parquet)  3,822 raw products (5 oct 2026)
+Bronze layer (Parquet)
+3,822 raw products (5 Oct 2026)
+metadata + IFC properties preserved
    |
    v
 filter + clean
    |
    v
-SILVER              physical BIM elements
+SILVER
+physical BIM elements + IFC properties
+   |
+   v
+GOLD
+element-specific ML features
 ```
 
 ### Raw IFC Extraction
