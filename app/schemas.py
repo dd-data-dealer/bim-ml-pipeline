@@ -3,7 +3,8 @@ from pyspark.sql.types import (
     StructField,
     StringType,
     IntegerType,
-    DoubleType
+    DoubleType,
+    MapType
 )
 
 
@@ -15,6 +16,12 @@ RAW_PRODUCT_SCHEMA = StructType([
     StructField("description", StringType(), True),
     StructField("object_type", StringType(), True),
     StructField("tag", StringType(), True),
+    # MAP type added to fix bug with missing properites kz 7/10/2026
+    StructField(
+        "properties",
+        MapType(StringType(), StringType(), True),
+        True,
+    ),
 ])
 
 

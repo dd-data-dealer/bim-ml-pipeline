@@ -2,7 +2,7 @@ def extract_wall_features(element: dict) -> dict:
     properties = element.get("properties") or {}
 
     return {
-        "element_id": properties.get("id"),
+        "element_id": element.get("id"),
         "element_type": "Wall",
         "length": properties.get("Length"),
         "height": properties.get("Height"),
@@ -29,7 +29,12 @@ def wall_features_partition(
 
         for _, row in batch.iterrows():
             element = row.to_dict()
+            # 7/10 check
+            # print("ELEMENT:")
+            # print(element)
+
             features = extract_wall_features(element)
             results.append(features)
+
 
         yield pd.DataFrame(results)

@@ -49,12 +49,11 @@ products_df.write \
 
 # check content:
 
-# products_df.select(
-#     "element_type",
-#     "name",
-#     "description",
-#     "object_type"
-# ).show(10, truncate=True)
+products_df.select(
+    "element_type",
+    "id",
+    "properties"
+).show(10, truncate=True)
 
 # check if any with desctription:
 # products_df.filter(
@@ -84,8 +83,8 @@ products_df.write \
 #     .count() \
 #     .filter(F.col("count") > 1) \
 #     .show()
-
-
+# print("check!!!")
+# products_df.printSchema()
 
 # ___________
 # silver
@@ -93,12 +92,15 @@ products_df.write \
 
 silver_df = create_silver_products(products_df)
 
-# silver_df.show(10, truncate=False)
-# silver_df.printSchema()
+silver_df.show(10, truncate=False)
+silver_df.printSchema()
 
 silver_df.write \
     .mode("overwrite") \
     .parquet("data/silver/products")
+
+print(products_df.is_cached)
+print(silver_df.is_cached)
 
 
 # -----------
@@ -148,6 +150,8 @@ wall_features_df = walls_df.mapInPandas(
     schema=WALL_FEATURE_SCHEMA
 )
 
-wall_features_df.show(truncate=False)
+# wall_features_df.show(truncate=False)
 
 spark.stop()
+print(products_df.is_cached)
+print(silver_df.is_cached)
