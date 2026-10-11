@@ -41,19 +41,19 @@ spark = (
 )
 
 # # 1.1 old
-# products_df=spark.createDataFrame(products, schema=RAW_PRODUCT_SCHEMA)
+products_df=spark.createDataFrame(products, schema=RAW_PRODUCT_SCHEMA)
 
 # 1.1. new
-products_rdd = spark.sparkContext.parallelize(
-    products,
-    numSlices=17
-)
+# products_rdd = spark.sparkContext.parallelize(
+#     products,
+#     numSlices=17
+# )
 
 # 1.1. new
-products_df = spark.createDataFrame(
-    products_rdd,
-    schema=RAW_PRODUCT_SCHEMA
-)
+# products_df = spark.createDataFrame(
+#     products_rdd,
+#     schema=RAW_PRODUCT_SCHEMA
+# )
 # kz 9th oct test:
 print("Partitions:", products_df.rdd.getNumPartitions())
 
@@ -69,6 +69,11 @@ products_df.write \
 
 
 silver_df = create_silver_products(products_df)
+# print("check after silver df creation")
+
+print("Silver partitions:", silver_df.rdd.getNumPartitions())
+# silver_df.show(10, truncate=False)
+# silver_df.printSchema()
 
 silver_df.write \
     .mode("overwrite") \
@@ -89,6 +94,14 @@ wall_features_df = walls_df.mapInPandas(
     schema=WALL_FEATURE_SCHEMA
 )
 
-# wall_features_df.show(truncate=False)
+wall_features_df.show(3, truncate=False)
+
+# print(spark.sparkContext.getConf().get("spark.driver.memory", "Not explicitly set"))
+# jvm = spark.sparkContext._jvm
+# # max partitoin size
+# print(f"Max partition size: {int(spark.conf.get('spark.sql.files.maxPartitionBytes').removesuffix('b')) / 1024**2:.2f} MB")
+# # max driver
+# print(f"Max JVM heap: {jvm.java.lang.Runtime.getRuntime().maxMemory() / 1024**2:.2f} MB")
 
 spark.stop()
+
